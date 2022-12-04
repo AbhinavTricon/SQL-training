@@ -1,0 +1,46 @@
+	# Creating address table
+CREATE TABLE address ( address_id INT NOT NULL ,address varchar(100) NOT NULL, 
+district varchar(100) NOT NULL,city_ID INT NOT NULL,postal_code INT NOT NULL,phone INT NOT NULL, PRIMARY KEY (address_id));
+
+	# Creating customer table
+CREATE TABLE customer ( customer_id INT NOT NULL ,address_id INT NOT NULL,
+first_name VARCHAR(100) NOT NULL ,last_name VARCHAR(100) NOT NULL ,email VARCHAR(100) NOT NULL ,active BIT NOt NULL, PRIMARY KEY (customer_id), FOREIGN KEY (address_id) REFERENCES address(address_id));
+
+	# Creating index at customer_id
+CREATE INDEX index_customer_id
+ON customer (customer_id);
+
+	# Inserting into address table
+INSERT INTO address (address_id, address, district, city_ID, postal_code, phone)
+VALUES (1, "Rau","Indore",1,123,9090909090);
+INSERT INTO address (address_id, address, district, city_ID, postal_code, phone)
+VALUES (2, "Vijay nagar","Indore",2,234,9090909091);
+INSERT INTO address (address_id, address, district, city_ID, postal_code, phone)
+VALUES (3, "Mp nagar","Bhopal",3,345,9090909092);
+INSERT INTO address (address_id, address, district, city_ID, postal_code, phone)
+VALUES (4, "Panchvati","Mhow",4,456,9090909093);
+
+	# Inserting into customer table
+INSERT INTO customer (customer_id, address_id, first_name, last_name,email,active)
+VALUES (1,1,"Abhi","Singh","abhi@gmail.com",1);
+INSERT INTO customer (customer_id, address_id, first_name, last_name,email,active)
+VALUES (2,2,"Ram","Singh","ram@gmail.com",0);
+INSERT INTO customer (customer_id, address_id, first_name, last_name,email,active)
+VALUES (3,3,"Krishna","Singh","kr@gmail.com",0);
+INSERT INTO customer (customer_id, address_id, first_name, last_name,email,active)
+VALUES (4,4,"Raju","Singh","raju@gmail.com",1);
+
+	# Using SELECT, WHERE, LIKE, GROUP BY
+Select * from customer where active=1;
+Select * from customer where address_id NOT IN (1,3);
+Select * from customer where first_name LIKE 'R%';
+Select * from customer where first_name LIKE 'R%' order by address_id DESC;
+Select address_id,count(*) from customer Group By address_id Having active=1 ;
+
+	# Using INNER JOIN, LEFT JOIN
+SELECT c.customer_id, c.first_name, c.last_name , a.address_id, a.address FROM customer AS c 
+INNER JOIN address AS a ON c.address_id = a.address_id;
+SELECT c.customer_id, c.first_name, c.last_name , a.address_id, a.address FROM address AS a 
+LEFT JOIN customer AS c ON c.address_id = a.address_id;
+
+
